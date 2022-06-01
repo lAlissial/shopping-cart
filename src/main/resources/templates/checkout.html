@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <div th:replace="/fragments/header :: header"/>
+</head>
+
+<body>
+
+<div th:replace="/fragments/header :: navbar"/>
+
+<div class="container">
+
+    <h1 class="jumbotron">
+        <span sec:authentication="name"></span>'s Checkout
+    </h1>
+
+    <div class="row panel-body">
+        <h1 class="col-md-11">Parabéns, pedido finalizado!</h1>
+        <h2 class="col-md-11" th:inline="text">Total pago: [[${total}]]</h2>
+    </div>
+
+    <a th:href="@{'/home'}" class="col-md-1">
+        <button type="button" class="btn btn-primary" th:text="Continuar">Continuar</button>
+    </a>
+
+</div>
+
+<div th:replace="/fragments/footer :: footer"/>
+
+</body>
+</html>
