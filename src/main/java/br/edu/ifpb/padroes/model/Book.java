@@ -1,10 +1,12 @@
 package br.edu.ifpb.padroes.model;
 
+import br.edu.ifpb.padroes.visitor.Visitor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 
 @Entity
 @DiscriminatorValue("book")
@@ -20,6 +22,11 @@ public class Book extends Product {
 
     public void setIsbnNumber(String isbnNumber) {
         this.isbnNumber = isbnNumber;
+    }
+
+    @Override
+    public BigDecimal accept(Visitor visitor) {
+        return visitor.visitBook(this);
     }
 
     @Override
