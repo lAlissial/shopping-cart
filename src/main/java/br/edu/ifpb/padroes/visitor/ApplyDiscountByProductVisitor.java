@@ -16,15 +16,14 @@ public class ApplyDiscountByProductVisitor implements Visitor{
     private static final BigDecimal ELECTRONIC_DISCOUNT = BigDecimal.valueOf(0.05); // 5 %
 
     public BigDecimal applyDiscount(Map<Product, Integer> args){
-        BigDecimal total = BigDecimal.ZERO;
-        total = total.add(args.keySet()
+        return args.keySet()
                 .stream()
                 .map(product -> product.getPrice()
                                         .multiply(product.accept(this))
                                         .multiply(BigDecimal.valueOf(args.get(product))))
                 .reduce(BigDecimal::add)
-                .orElse(BigDecimal.ZERO));
-        return total;
+                .orElse(BigDecimal.ZERO);
+
     }
 
 

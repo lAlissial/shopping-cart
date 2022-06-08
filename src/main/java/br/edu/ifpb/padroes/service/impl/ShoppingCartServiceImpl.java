@@ -33,8 +33,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private Map<Product, Integer> products = new HashMap<>();
 
     private BigDecimal applyDiscount(Map<Product, Integer> dic){
-        ApplyDiscountByProductVisitor applyDiscountByProductVisitor = new ApplyDiscountByProductVisitor();
-        return applyDiscountByProductVisitor.applyDiscount(dic);
+        ApplyDiscountByProductVisitor discount = new ApplyDiscountByProductVisitor();
+        return discount.applyDiscount(dic);
     }
 
     @Autowired
