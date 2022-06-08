@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 /**
@@ -32,7 +33,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private Map<Product, Integer> products = new HashMap<>();
 
-    private BigDecimal applyDiscount(Map<Product, Integer> dic){
+    private BigDecimal getDiscount(Map<Product, Integer> dic, BigDecimal desconto){
+        ApplyDiscountByProductVisitor discount = new ApplyDiscountByProductVisitor();
+        discount.setDesconto(desconto);
+        return discount.applyDiscount(dic);
+    }
+
+    private BigDecimal getDiscount(Map<Product, Integer> dic){
         ApplyDiscountByProductVisitor discount = new ApplyDiscountByProductVisitor();
         return discount.applyDiscount(dic);
     }
@@ -87,7 +94,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
      */
     @Override
     public BigDecimal getTotalDiscount() {
-        return applyDiscount(products);
+//        BigDecimal descontoNatal = BigDecimal.valueOf(0.5); ///50%
+//        return getDiscount(products, descontoNatal);
+        return getDiscount(products);
     }
 
     /**
