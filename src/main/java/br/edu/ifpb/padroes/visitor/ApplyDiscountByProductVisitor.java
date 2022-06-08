@@ -17,23 +17,21 @@ public class ApplyDiscountByProductVisitor implements Visitor{
 
     public BigDecimal applyDiscount(Map<Product, Integer> args){
         return args.keySet()
-                .stream()
-                .map(product -> product.getPrice()
-                                        .multiply(product.accept(this))
-                                        .multiply(BigDecimal.valueOf(args.get(product))))
-                .reduce(BigDecimal::add)
-                .orElse(BigDecimal.ZERO);
+                   .stream()
+                   .map(product -> product.accept(this)
+                                           .multiply(BigDecimal.valueOf(args.get(product))))
+                   .reduce(BigDecimal::add)
+                   .orElse(BigDecimal.ZERO);
 
     }
 
-
     @Override
     public BigDecimal visitBook(Book book) {
-        return BOOK_DISCOUNT;
+        return book.getPrice().multiply(BOOK_DISCOUNT);
     }
 
     @Override
     public BigDecimal visitEletronic(Electronic eletronic) {
-        return ELECTRONIC_DISCOUNT;
+        return eletronic.getPrice().multiply(ELECTRONIC_DISCOUNT);
     }
 }
