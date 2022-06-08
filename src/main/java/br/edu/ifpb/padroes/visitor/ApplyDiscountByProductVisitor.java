@@ -17,22 +17,13 @@ public class ApplyDiscountByProductVisitor implements Visitor{
 
     public BigDecimal applyDiscount(Map<Product, Integer> args){
         BigDecimal total = BigDecimal.ZERO;
-        total.add(args.keySet()
+        total = total.add(args.keySet()
                 .stream()
                 .map(product -> product.getPrice()
                                         .multiply(product.accept(this))
                                         .multiply(BigDecimal.valueOf(args.get(product))))
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO));
-
-//        for (Product product : args) {
-//            total.add(product.getPrice()
-//                             .multiply(product.accept(this))
-//                             //.multiply(BigDecimal.valueOf(args.get(product)))
-//                    );
-//            System.out.println(total);
-//        }
-
         return total;
     }
 
