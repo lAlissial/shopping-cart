@@ -1,12 +1,10 @@
 package br.edu.ifpb.padroes.service.impl;
 
 import br.edu.ifpb.padroes.exception.NotEnoughProductsInStockException;
-import br.edu.ifpb.padroes.model.Book;
-import br.edu.ifpb.padroes.model.Electronic;
 import br.edu.ifpb.padroes.model.Product;
 import br.edu.ifpb.padroes.repository.ProductRepository;
 import br.edu.ifpb.padroes.service.ShoppingCartService;
-import br.edu.ifpb.padroes.visitor.ApplyDiscountVisitor;
+import br.edu.ifpb.padroes.visitor.ApplyDiscountByProductVisitor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -31,6 +29,8 @@ import java.util.Map;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private final ProductRepository productRepository;
+
+    private ApplyDiscountByProductVisitor applyDiscountByProductVisitor = new ApplyDiscountByProductVisitor();
 
 
     private Map<Product, Integer> products = new HashMap<>();
@@ -85,9 +85,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
      */
     @Override
     public BigDecimal getTotalDiscount() {
-        ApplyDiscountVisitor applyDiscountVisitor = new ApplyDiscountVisitor();
-        return (BigDecimal) products.keySet().stream().map(product -> applyDiscountVisitor.applyDiscount()
-                                                                                          .multiply(BigDecimal.valueOf(products.get(product))));
+        return applyDiscountByProductVisitor.applyDiscount(products);
+//        return products.keySet()
+//                        .stream()
+//                        .map(product -> applyDiscountByProductVisitor.applyDiscount(product)
+//                                                            .multiply(BigDecimal.valueOf(products.get(product))))
+//                        .reduce(BigDecimal::add)
+//                        .orElse(BigDecimal.ZERO);
+
+
 //        return
 //                products.keySet()
 //                        .stream()
