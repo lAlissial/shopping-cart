@@ -30,10 +30,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private final ProductRepository productRepository;
 
-    private ApplyDiscountByProductVisitor applyDiscountByProductVisitor = new ApplyDiscountByProductVisitor();
-
-
     private Map<Product, Integer> products = new HashMap<>();
+
+    private BigDecimal applyDiscount(Map<Product, Integer> dic){
+        ApplyDiscountByProductVisitor applyDiscountByProductVisitor = new ApplyDiscountByProductVisitor();
+        return applyDiscountByProductVisitor.applyDiscount(dic);
+    }
 
     @Autowired
     public ShoppingCartServiceImpl(ProductRepository productRepository) {
@@ -85,7 +87,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
      */
     @Override
     public BigDecimal getTotalDiscount() {
-        return applyDiscountByProductVisitor.applyDiscount(products);
+        return applyDiscount(products);
     }
 
     /**
